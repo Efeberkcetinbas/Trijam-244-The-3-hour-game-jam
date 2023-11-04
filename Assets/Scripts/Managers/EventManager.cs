@@ -4,13 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum GameEvent
 {
+    
     //Player
-    OnTargetHit,
+    OnPlayerGetDamage,
 
+
+    //Key
+    OnCollectKey,
 
     //Game Management
-    OnIncreaseScore,
+
     OnUIUpdate,
+    OnIncreaseScore,
+    OnUIRequirementUpdate,
     OnUIGameOver,
     OnNextLevel,
     OnGameOver
