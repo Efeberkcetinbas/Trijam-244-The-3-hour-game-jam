@@ -13,7 +13,13 @@ public class GameData : ScriptableObject
     public float LevelRequirementNumber;
     public float sumReqNumber;
     public float ProgressNumber;
-    public int LevelNumberIndex;
+    
+    //Timer
+    public float timer;
+    public int minutes;
+    public int seconds;
+
+    public string ShowTime;
 
     public bool isGameEnd=false;
 

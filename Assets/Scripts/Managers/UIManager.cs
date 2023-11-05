@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [Header("Text's")]
     [SerializeField] private TextMeshProUGUI score;
     [SerializeField] private TextMeshProUGUI highscore;
+    [SerializeField] private TextMeshProUGUI timerText;
 
     public GameData gameData;
     public PlayerData playerData;
@@ -20,12 +21,14 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.AddHandler(GameEvent.OnUIUpdate, OnUIUpdate);
+        EventManager.AddHandler(GameEvent.OnUpdateTimeUI, OnUpdateTimeUI);
         EventManager.AddHandler(GameEvent.OnNextLevel,OnNextLevel);
         EventManager.AddHandler(GameEvent.OnUIRequirementUpdate,OnUIRequirementUpdate);
     }
     private void OnDisable()
     {
         EventManager.RemoveHandler(GameEvent.OnUIUpdate, OnUIUpdate);
+        EventManager.RemoveHandler(GameEvent.OnUpdateTimeUI, OnUpdateTimeUI);
         EventManager.RemoveHandler(GameEvent.OnNextLevel,OnNextLevel);
         EventManager.RemoveHandler(GameEvent.OnUIRequirementUpdate,OnUIRequirementUpdate);
     }
@@ -34,6 +37,11 @@ public class UIManager : MonoBehaviour
     {
         OnNextLevel();
         OnUIUpdate();
+    }
+
+    private void OnUpdateTimeUI() 
+    {
+        timerText.SetText(gameData.ShowTime=string.Format("{0:00} : {1:00}",gameData.minutes,gameData.seconds));
     }
     
     void OnUIUpdate()

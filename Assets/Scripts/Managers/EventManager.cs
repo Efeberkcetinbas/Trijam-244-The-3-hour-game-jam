@@ -21,6 +21,7 @@ public enum GameEvent
     OnLevelEnd,
     OnUIGameOver,
     OnNextLevel,
+    OnUpdateTimeUI,
     OnGameOver
 }
 public class EventManager
