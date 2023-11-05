@@ -22,12 +22,16 @@ public class CameraManager : MonoBehaviour
     {
         EventManager.AddHandler(GameEvent.OnPlayerGetDamage,OnPlayerGetDamage);
         EventManager.AddHandler(GameEvent.OnCollectKey,OnCollectKey);
+        EventManager.AddHandler(GameEvent.OnLevelEnd,OnLevelEnd);
+        EventManager.AddHandler(GameEvent.OnNextLevel,OnNextLevel);
     }
 
     private void OnDisable() 
     {
         EventManager.RemoveHandler(GameEvent.OnPlayerGetDamage,OnPlayerGetDamage);
         EventManager.RemoveHandler(GameEvent.OnCollectKey,OnCollectKey);
+        EventManager.RemoveHandler(GameEvent.OnLevelEnd,OnLevelEnd);
+        EventManager.RemoveHandler(GameEvent.OnNextLevel,OnNextLevel);
     }
 
     
@@ -45,9 +49,18 @@ public class CameraManager : MonoBehaviour
 
     private void OnCollectKey()
     {
-
+        Noise(amplitudeGain,frequencyGain,shakeTime);
     }
 
+    private void OnLevelEnd()
+    {
+        ChangeFieldOfView(newFieldOfView,1);
+    }
+
+    private void OnNextLevel()
+    {
+        ChangeFieldOfView(oldFieldOfView,1);
+    }
 
     private void OnPlayerGetDamage()
     {

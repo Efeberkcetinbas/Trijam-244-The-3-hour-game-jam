@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
     [Header("Open/Close")]
     [SerializeField] private GameObject[] open_close;
 
+    private float value;
+
+    
+
 
 
     private void Awake() 
@@ -29,16 +33,31 @@ public class GameManager : MonoBehaviour
     }
     
 
+    private void Start() 
+    {
+        //Bullshit Solution But I have to sleep. So Its temp
+        Invoke("SetStartValues",1);
+    }
+
+    private void SetStartValues()
+    {
+        OnNextLevel();
+    }
+
     
 
     private void OnEnable()
     {
+        EventManager.AddHandler(GameEvent.OnLevelEnd,OnLevelEnd);
         EventManager.AddHandler(GameEvent.OnNextLevel,OnNextLevel);
+        EventManager.AddHandler(GameEvent.OnCollectKey,OnCollectKey);
     }
 
     private void OnDisable()
     {
+        EventManager.RemoveHandler(GameEvent.OnLevelEnd,OnLevelEnd);
         EventManager.RemoveHandler(GameEvent.OnNextLevel,OnNextLevel);
+        EventManager.RemoveHandler(GameEvent.OnCollectKey,OnCollectKey);
     }
 
 
@@ -49,6 +68,8 @@ public class GameManager : MonoBehaviour
     {
         gameData.LevelRequirementNumber=FindObjectOfType<RequirementControl>().RequirementNumber;
         EventManager.Broadcast(GameEvent.OnUIRequirementUpdate);
+        value=1/gameData.LevelRequirementNumber;
+
         //Update UI
     }
 
@@ -67,21 +88,46 @@ public class GameManager : MonoBehaviour
     private void OnNextLevel()
     {
         gameData.ProgressNumber=0;
-        gameData.isGameEnd=true;
-        EventManager.Broadcast(GameEvent.OnUIRequirementUpdate);
-    }
-
-    private void OnGameStart()
-    {
+        gameData.sumReqNumber=0;
+        gameData.isGameEnd=false;
+        playerData.playerCanMove=true;
         UpdateRequirement();
+        EventManager.Broadcast(GameEvent.OnUIRequirementUpdate);
+        
+
     }
 
+    private void OnCollectKey()
+    {
+        EventManager.Broadcast(GameEvent.OnIncreaseScore);
+        gameData.sumReqNumber++;
+        gameData.ProgressNumber+=value;
+        EventManager.Broadcast(GameEvent.OnUIRequirementUpdate);
+
+        if(gameData.sumReqNumber==gameData.LevelRequirementNumber)
+            EventManager.Broadcast(GameEvent.OnLevelEnd);
+    }
+
+    private void OnLevelEnd()
+    {
+        gameData.isGameEnd=true;
+        
+        StartCoroutine(CallOnNextLevel());
+    }
+
+    private IEnumerator CallOnNextLevel()
+    {
+        yield return new WaitForSeconds(2);
+        EventManager.Broadcast(GameEvent.OnNextLevelStart);
+    }
     
     
     void ClearData()
     {
-        gameData.isGameEnd=true;
+        gameData.isGameEnd=false;
+        gameData.sumReqNumber=0;
         gameData.ProgressNumber=0;
+        playerData.playerCanMove=true;
     }
 
    

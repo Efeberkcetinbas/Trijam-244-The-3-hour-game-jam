@@ -41,8 +41,8 @@ public class PanelManager : MonoBehaviour
         
         gameObject.SetActive(true);
         image.color=new Color(0,0,0,1);
-        image.DOFade(0,2f);
-        yield return new WaitForSeconds(2f);
+        image.DOFade(0,3f);
+        yield return new WaitForSeconds(3f);
         gameObject.SetActive(false);
 
     }

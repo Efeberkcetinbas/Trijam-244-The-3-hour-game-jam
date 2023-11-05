@@ -14,6 +14,19 @@ public class LevelManager : MonoBehaviour
     {
         LoadLevel();
     }
+
+    private void OnEnable() 
+    {
+        EventManager.AddHandler(GameEvent.OnNextLevelStart,OnNextLevelStart);
+        
+    }
+
+    private void OnDisable() 
+    {
+        EventManager.RemoveHandler(GameEvent.OnNextLevelStart,OnNextLevelStart);
+        
+    }
+
     private void LoadLevel()
     {
 
@@ -30,12 +43,15 @@ public class LevelManager : MonoBehaviour
         levels[levelIndex].SetActive(true);
     }
 
-    public void LoadNextLevel()
+
+
+    private void OnNextLevelStart()
     {
         PlayerPrefs.SetInt("LevelNumber", levelIndex + 1);
         PlayerPrefs.SetInt("RealLevel", PlayerPrefs.GetInt("RealLevel", 0) + 1);
-        EventManager.Broadcast(GameEvent.OnNextLevel);
         LoadLevel();
+        EventManager.Broadcast(GameEvent.OnNextLevel);
+
     }
 
     public void RestartLevel()

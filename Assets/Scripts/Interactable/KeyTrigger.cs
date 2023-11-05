@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class KeyTrigger : Obstacleable
 {
+    [SerializeField] private GameObject destroyEffect;
     internal override void DoAction(Player player)
     {
-        //
-        Debug.Log("KEY COLLECTED");
+        Instantiate(destroyEffect,transform.position,Quaternion.identity);
+        EventManager.Broadcast(GameEvent.OnCollectKey);
+        Destroy(gameObject);
     }
 }

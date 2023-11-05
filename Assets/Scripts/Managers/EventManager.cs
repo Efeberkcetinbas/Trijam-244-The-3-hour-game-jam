@@ -15,8 +15,10 @@ public enum GameEvent
     //Game Management
 
     OnUIUpdate,
+    OnNextLevelStart,
     OnIncreaseScore,
     OnUIRequirementUpdate,
+    OnLevelEnd,
     OnUIGameOver,
     OnNextLevel,
     OnGameOver

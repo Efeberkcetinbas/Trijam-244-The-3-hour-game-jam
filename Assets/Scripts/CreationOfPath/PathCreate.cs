@@ -23,6 +23,17 @@ public class PathCreate : MonoBehaviour
         cam=Camera.main;
     }
 
+    private void OnEnable() 
+    {
+        EventManager.AddHandler(GameEvent.OnLevelEnd,OnLevelEnd);
+
+    }
+
+    private void OnDisable() 
+    {
+        EventManager.AddHandler(GameEvent.OnLevelEnd,OnLevelEnd);
+    }
+
     void Update()
     {
         if(!gameData.isGameEnd)
@@ -39,9 +50,12 @@ public class PathCreate : MonoBehaviour
 
                 if(!playerData.playerCanMove)
                 {
-                    Debug.Log("GAME IS END");
+                    gameData.isGameEnd=true;
+                    //Event
                 }
             }
+
+           
                 
 
             if(Input.GetButton("Fire1"))
@@ -69,6 +83,12 @@ public class PathCreate : MonoBehaviour
         }
     }
 
+    private void OnLevelEnd()
+    {
+        points.Clear();
+        OnNewPathCreated(points);
+        lineRenderer.positionCount=0;
+    }
 
     private float DistanceToLastPoint(Vector3 point)
     {
